@@ -1,7 +1,7 @@
 # Package Import
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-from airflow.providers.http.operators.http import SimpleHttpOperator
+from airflow.providers.http.operators.http import HttpOperator
 from airflow.decorators import task
 import pendulum
 
@@ -13,7 +13,9 @@ with DAG(
 ) as dag:
 
     '''서울시 공공자전거 대여소 정보'''
-    tb_cycle_station_info = SimpleHttpOperator(
+    # SimpleHttpOperator -> HttpOperator로 변경되었습니다.
+    # HttpOperator로 작성해주세요.
+    tb_cycle_station_info = HttpOperator(
         task_id='tb_cycle_station_info',
         http_conn_id='openapi.seoul.go.kr',
         endpoint='{{var.value.apikey_openapi_seoul_go_kr}}/json/tbCycleStationInfo/1/10/',
