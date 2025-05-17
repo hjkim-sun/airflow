@@ -1,10 +1,15 @@
-from airflow import DAG
-from airflow import Dataset
-from airflow.datasets import DatasetAlias
-from airflow.decorators import task
-from airflow.io.path import ObjectStoragePath
 from operators.seoul_api_to_csv_operator import SeoulApiToCsvOperator
 import pendulum
+
+# Airflow 3.0 부터 각각 아래 경로로 import 합니다.
+from airflow.sdk import DAG, task, ObjectStoragePath, Asset, AssetAlias
+
+# Airflow 2.10.5 이하 버전에서 실습시 각각 아래 경로에서 import 하세요.
+#from airflow import DAG
+#from airflow.decorators import task
+#from airflow.io.path import ObjectStoragePath
+#from airflow import Dataset (DAG 코드 내 Asset --> Dataset 변경 필요)
+#from airflow.datasets import DatasetAlias (DAG 코드 내 AssetAlias --> DatasetAlias 로 변경 필요)
 
 
 BUCKET_NM = 's3://airflow-staging-hjkim/staging'
@@ -26,7 +31,7 @@ with DAG(
     )
 
     @task(task_id='task_producer_with_dataset_alias',
-          outlets=[DatasetAlias(DATASET_ALIAS)])
+          outlets=[AssetAlias(DATASET_ALIAS)])
     def task_producer_with_dataset_alias(**kwargs):
         ymdhm = kwargs.get('data_interval_end').in_timezone('Asia/Seoul').strftime('%Y%m%d%H%M')
         ymd = ymdhm[:-4]
@@ -42,7 +47,7 @@ with DAG(
 
         # 실제 어떤 DataSet 명으로 publish 할지는 아래에서 결정 (런타임시 확정)
         # Metadata에는 저장한 S3의 상세 경로를 기입
-        outlet_events[DatasetAlias(DATASET_ALIAS)].add(Dataset(f'{DATASET_PREFIX}/{ymdh}'),
+        outlet_events[AssetAlias(DATASET_ALIAS)].add(Asset(f'{DATASET_PREFIX}/{ymdh}'),
                                                        extra={"path": f'{DATASET_PREFIX}/{file_nm}'})
 
         # S3 전송

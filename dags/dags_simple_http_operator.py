@@ -1,9 +1,12 @@
-# Package Import
-from airflow import DAG
-from airflow.operators.bash import BashOperator
-from airflow.providers.http.operators.http import HttpOperator
-from airflow.decorators import task
 import pendulum
+from airflow.providers.http.operators.http import HttpOperator
+# Airflow 3.0 부터 아래 경로로 import 합니다.
+from airflow.sdk import DAG, task
+
+# Airflow 2.10.5 이하 버전에서 실습시 아래 경로에서 import 하세요.
+#from airflow import DAG
+#from airflow.decorators import task
+
 
 with DAG(
     dag_id='dags_simple_http_operator',

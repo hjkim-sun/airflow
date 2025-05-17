@@ -1,8 +1,13 @@
-from airflow import DAG
 import pendulum
-import datetime
-from airflow.operators.python import PythonOperator
 from common.common_func import get_sftp
+
+# Airflow 3.0 부터 아래 경로로 import 합니다.
+from airflow.sdk import DAG
+from airflow.providers.standard.operators.python import PythonOperator
+
+# Airflow 2.10.5 이하 버전에서 실습시 아래 경로에서 import 하세요.
+#from airflow.operators.python import PythonOperator
+#from airflow import DAG
 
 with DAG(
     dag_id="dags_python_import_func",

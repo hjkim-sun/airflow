@@ -1,8 +1,12 @@
-from airflow import DAG
 import pendulum
-from airflow.operators.empty import EmptyOperator
-from airflow.utils.edgemodifier import Label
+# Airflow 3.0 부터 아래 경로로 import 합니다.
+from airflow.sdk import DAG, Label
+from airflow.providers.standard.operators.empty import EmptyOperator
 
+# Airflow 2.10.5 이하 버전에서 실습시 아래 경로에서 import 하세요.
+#from airflow import DAG
+#from airflow.utils.edgemodifier import Label
+#from airflow.operators.empty import EmptyOperator
 
 with DAG(
     dag_id="dags_empty_with_edge_label",

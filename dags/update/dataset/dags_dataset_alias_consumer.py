@@ -1,9 +1,14 @@
-from airflow import DAG
-from airflow.datasets import DatasetAlias
-from airflow.decorators import task
-from airflow.io.path import ObjectStoragePath
 from airflow.exceptions import AirflowException
 import pendulum
+
+# Airflow 3.0 부터 각각 아래 경로로 import 합니다.
+from airflow.sdk import DAG, task, ObjectStoragePath, AssetAlias
+
+# Airflow 2.10.5 이하 버전에서 실습시 각각 아래 경로에서 import 하세요.
+#from airflow import DAG
+#from airflow.decorators import task
+#from airflow.io.path import ObjectStoragePath
+#from airflow.datasets import DatasetAlias (DAG 코드 내 AssetAlias --> DatasetAlias 로 변경 필요)
 
 
 BUCKET_NM = 's3://airflow-staging-hjkim/staging'
@@ -12,18 +17,20 @@ DATASET_ALIAS = 'ds_rt_bicycle_to_s3'
 
 with DAG(
         dag_id='dags_dataset_alias_consumer',
-        schedule=[DatasetAlias(DATASET_ALIAS)],
+        schedule=[AssetAlias(DATASET_ALIAS)],
         catchup=False,
         start_date=pendulum.datetime(2025, 3, 1, tz='Asia/Seoul'),
-        tags=['update:2.10.5','producer','metadata','dataset-alias','bicycle']
+        tags=['update:2.10.5','producer','metadata','asset-alias','bicycle']
 ) as dag:
     @task(task_id='task_consumer_with_dataset_alias',
-          inlets=[DatasetAlias(DATASET_ALIAS)])
+          inlets=[AssetAlias(DATASET_ALIAS)])
     def task_consumer_with_dataset_alias(**kwargs):
         inlet_events = kwargs.get('inlet_events')
-        events = inlet_events[DatasetAlias(DATASET_ALIAS)]
+        print('inlet_events',inlet_events)
+        events = inlet_events[AssetAlias(DATASET_ALIAS)]
 
         # Metadata에서 S3 경로를 얻은 후 ObjectStoragePath 를 이용해
+        print('events', events)
         src_path = events[-1].extra["path"]      # events[-1]: 가장 최근의 데이터셋
         file_nm = src_path.split('/')[-1]
         src_obj = ObjectStoragePath(src_path, conn_id='conn-amazon-s3-access')

@@ -1,18 +1,21 @@
-from airflow import Dataset
-from airflow import DAG
-from airflow.decorators import task
 import pendulum
 from zlib import crc32
+# Airflow 3.0 부터 각각 아래 경로로 import 합니다.
+from airflow.sdk import DAG, task, Asset
 
+# Airflow 2.10.5 이하 버전에서 실습시 각각 아래 경로에서 import 하세요.
+#from airflow import DAG
+#from airflow.decorators import task
+#from airflow import Dataset (DAG 코드 내 Asset --> Dataset 변경 필요)
 
-seoul_api_rt_bicycle_info = Dataset('seoul_api_rt_bicycle_info')
+seoul_api_rt_bicycle_info = Asset('seoul_api_rt_bicycle_info')
 
 with DAG(
         dag_id='dags_dataset_metadata_consumer',
         schedule=[seoul_api_rt_bicycle_info],
         catchup=False,
         start_date=pendulum.datetime(2025, 3, 1, tz='Asia/Seoul'),
-        tags=['update:2.10.5','dataset','producer','metadata']
+        tags=['update:2.10.5','dataset','consumer','metadata']
 ) as dag:
     @task(task_id='task_read_rt_bicycle_info_csv')
     def task_read_rt_bicycle_info_csv(**kwargs):
@@ -28,7 +31,7 @@ with DAG(
           inlets=[seoul_api_rt_bicycle_info])
     def task_consumer_with_metadata(file_crc, **kwargs):
         inlet_events = kwargs.get('inlet_events')
-        events = inlet_events[Dataset('seoul_api_rt_bicycle_info')]
+        events = inlet_events[Asset('seoul_api_rt_bicycle_info')]
         print('::group::Dataset Event List')
         for i in events:
             print(i)

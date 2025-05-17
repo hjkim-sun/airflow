@@ -1,6 +1,11 @@
-from airflow import DAG
-from airflow.sensors.filesystem import FileSensor
 import pendulum
+# Airflow 3.0 부터 아래 경로로 import 합니다.
+from airflow.providers.standard.sensors.filesystem import FileSensor
+from airflow.sdk import DAG
+
+# Airflow 2.10.5 이하 버전에서 실습시 아래 경로에서 import 하세요.
+#from airflow import DAG
+#from airflow.sensors.filesystem import FileSensor
 
 with DAG(
     dag_id='dags_file_sensor',

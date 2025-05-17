@@ -1,7 +1,15 @@
-from airflow import DAG
-from airflow.sensors.python import PythonSensor
 import pendulum
 from airflow.hooks.base import BaseHook
+
+# Airflow 3.0 부터 아래 경로로 import 합니다.
+from airflow.sdk import DAG
+from airflow.providers.standard.sensors.python import PythonSensor
+
+# Airflow 2.10.5 이하 버전에서 실습시 airflow.sensors.python 에서 import 하세요.
+#from airflow import DAG
+#from airflow.sensors.python import PythonSensor
+
+
 
 with DAG(
     dag_id='dags_python_sensor',

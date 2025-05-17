@@ -1,9 +1,12 @@
-from airflow.io.path import ObjectStoragePath
-from airflow import DAG
 import pendulum
-from airflow.decorators import task
-from airflow.operators.python import get_current_context
+# Airflow 3.0 부터 각각 아래 경로로 import 합니다.
+from airflow.sdk import DAG, task, get_current_context, ObjectStoragePath
 
+# Airflow 2.10.5 이하 버전에서 실습시 각각 아래 경로에서 import 하세요.
+#from airflow import DAG
+#from airflow.decorators import task
+#from airflow.operators.python import get_current_context
+#from airflow.io.path import ObjectStoragePath
 
 src = ObjectStoragePath('s3://airflow-staging-hjkim/staging', conn_id='conn-amazon-s3-access')
 dst = ObjectStoragePath('file:///opt/airflow/files/staging')

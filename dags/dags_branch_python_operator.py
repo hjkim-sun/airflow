@@ -1,7 +1,13 @@
-from airflow import DAG
 import pendulum
-from airflow.operators.python import PythonOperator
-from airflow.operators.python import BranchPythonOperator
+# Airflow 3.0 부터 아래 경로로 import 합니다.
+from airflow.providers.standard.operators.python import PythonOperator
+from airflow.providers.standard.operators.python import BranchPythonOperator
+from airflow.sdk import DAG
+
+# Airflow 2.10.5 이하 버전에서 실습시 아래 경로에서 import 하세요.
+#from airflow import DAG
+#from airflow.operators.python import PythonOperator
+#from airflow.operators.python import BranchPythonOperator
 
 with DAG(
     dag_id='dags_branch_python_operator',

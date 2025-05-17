@@ -2,10 +2,16 @@ from airflow.providers.slack.operators.slack_webhook import SlackWebhookOperator
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 from airflow.decorators import task
 import config.slack_block_builder as sb
-from airflow import DAG
 import pendulum
 from contextlib import closing
 import pandas as pd
+
+# Airflow 3.0 부터 아래 경로로 import 합니다.
+from airflow.sdk import DAG
+
+
+# Airflow 2.10.5 이하 버전에서 실습시 아래 경로에서 import 하세요.
+#from airflow import DAG
 
 with DAG(
     dag_id='dags_daily_dag_monitoring',

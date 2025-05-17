@@ -1,8 +1,13 @@
-from airflow import DAG
 import pendulum
-from airflow.decorators import task
-from airflow.operators.python import get_current_context
 import os
+
+# Airflow 3.0 부터 각각 아래 경로로 import 합니다.
+from airflow.sdk import DAG, task, get_current_context
+
+# Airflow 2.10.5 이하 버전에서 실습시 각각 아래 경로에서 import 하세요.
+#from airflow import DAG
+#from airflow.decorators import task
+#from airflow.operators.python import get_current_context
 
 with DAG(
         dag_id="dags_dynamic_task_mapping_index",

@@ -1,8 +1,12 @@
-from airflow import DAG
 import pendulum
-from airflow.decorators import task, task_group
 from airflow.exceptions import AirflowException
 
+# Airflow 3.0 부터 각각 아래 경로로 import 합니다.
+from airflow.sdk import DAG, task, task_group
+
+# Airflow 2.10.5 이하 버전에서 실습시 각각 아래 경로에서 import 하세요.
+#from airflow import DAG
+#from airflow.decorators import task, task_group
 
 with DAG(
         dag_id="dags_setup_n_teardown_tg",

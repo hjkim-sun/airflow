@@ -1,6 +1,10 @@
 from operators.seoul_api_to_csv_operator import SeoulApiToCsvOperator
-from airflow import DAG
 import pendulum
+# Airflow 3.0 부터 아래 경로로 import 합니다.
+from airflow.sdk import DAG
+
+# Airflow 2.10.5 이하 버전에서 실습시 아래 경로에서 import 하세요.
+#from airflow import DAG
 
 with DAG(
     dag_id='dags_seoul_api_corona',

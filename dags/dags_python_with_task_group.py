@@ -1,10 +1,14 @@
-from airflow import DAG
 import pendulum
-import datetime
-from airflow.operators.python import PythonOperator
-from airflow.decorators import task
-from airflow.decorators import task_group
-from airflow.utils.task_group import TaskGroup
+# Airflow 3.0 부터 아래 경로로 import 합니다.
+from airflow.sdk import DAG, task, task_group, TaskGroup
+from airflow.providers.standard.operators.python import PythonOperator
+
+# Airflow 2.10.5 이하 버전에서 실습시 아래 경로에서 import 하세요.
+#from airflow.operators.python import PythonOperator
+#from airflow import DAG
+#from airflow.decorators import task
+#from airflow.decorators import task_group
+#from airflow.utils.task_group import TaskGroup
 
 with DAG(
     dag_id="dags_python_with_task_group",

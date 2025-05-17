@@ -1,7 +1,11 @@
-from airflow import DAG
 import pendulum
-import datetime
-from airflow.operators.bash import BashOperator
+# Airflow 3.0 부터 아래 경로로 import 합니다.
+from airflow.providers.standard.operators.bash import BashOperator
+from airflow.sdk import DAG
+
+# Airflow 2.10.5 이하 버전에서 실습시 아래 경로에서 import 하세요.
+#from airflow.operators.bash import BashOperator
+#from airflow import DAG
 
 with DAG(
     dag_id="dags_bash_with_template",

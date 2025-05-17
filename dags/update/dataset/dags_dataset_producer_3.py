@@ -1,9 +1,13 @@
-from airflow import Dataset
-from airflow import DAG
-from airflow.decorators import task
 import pendulum
+# Airflow 3.0 부터 각각 아래 경로로 import 합니다.
+from airflow.sdk import DAG, task, Asset
 
-dataset_dags_dataset_producer_3 = Dataset("dags_dataset_producer_3")
+# Airflow 2.10.5 이하 버전에서 실습시 각각 아래 경로에서 import 하세요.
+#from airflow import DAG
+#from airflow.decorators import task
+#from airflow import Dataset (DAG 코드 내 Asset --> Dataset 변경 필요)
+
+dataset_dags_dataset_producer_3 = Asset("dags_dataset_producer_3")
 
 with DAG(
         dag_id='dags_dataset_producer_3',

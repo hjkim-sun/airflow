@@ -1,8 +1,12 @@
-from airflow import DAG
 import pendulum
-from airflow.decorators import task
 import os
-from airflow.operators.bash import BashOperator
+# Airflow 3.0 부터 각각 아래 경로로 import 합니다.
+from airflow.sdk import DAG, task
+from airflow.providers.standard.operators.bash import BashOperator
+
+# Airflow 2.10.5 이하 버전에서 실습시 각각 아래 경로에서 import 하세요.
+#from airflow import DAG
+#from airflow.operators.bash import BashOperator
 
 
 with DAG(
@@ -22,6 +26,10 @@ with DAG(
         task_id="t1_orange",
         bash_command="/opt/airflow/plugins/shell/select_fruit.sh ORANGE",
     )
+
+    @task(task_id='test')
+    def sample():
+        print('good')
 
     @task.bash(task_id='task_skip_state')
     def task_skip_state():
@@ -51,3 +59,4 @@ with DAG(
     t1_orange >> task_select_fruit() >> task_skip_state()
     task_get_env()
     task_py_is_better_than_bash_operator()
+    sample()

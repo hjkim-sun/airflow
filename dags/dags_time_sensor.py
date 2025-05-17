@@ -1,6 +1,11 @@
 import pendulum
-from airflow import DAG
-from airflow.sensors.date_time import DateTimeSensor
+# Airflow 3.0 부터 아래 경로로 import 합니다.
+from airflow.sdk import DAG
+from airflow.providers.standard.sensors.date_time import DateTimeSensor
+
+# Airflow 2.10.5 이하 버전에서 실습시 아래 경로에서 import 하세요.
+#from airflow import DAG
+#from airflow.sensors.date_time import DateTimeSensor
 
 with DAG(
     dag_id="dags_time_sensor",

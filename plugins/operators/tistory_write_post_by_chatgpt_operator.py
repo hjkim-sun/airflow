@@ -1,10 +1,18 @@
-from airflow.models import Variable
-from airflow.models.baseoperator import BaseOperator
 from config.chatgpt import get_chatgpt_response
 from config.pykrx_api import get_prompt_for_chatgpt
 from config.tistory import set_tistory_post
 import pendulum
 from random import randrange
+
+# Airflow 3.0 부터 아래 경로로 import 합니다.
+from airflow.models import BaseOperator
+from airflow.sdk import Variable
+
+# Airflow 2.10.5 이하 버전에서 실습시 아래 경로에서 import 하세요.
+#from airflow.models.baseoperator import BaseOperator
+#from airflow.models import Variable
+
+
 class TistoryWritePostByChatgptOperator(BaseOperator):
     def __init__(self, post_cnt_per_market: int, **kwargs):
         super().__init__(**kwargs)

@@ -1,8 +1,13 @@
-from airflow import DAG
-from airflow.operators.bash import BashOperator
 import pendulum
 from datetime import timedelta
-from airflow.models import Variable
+# Airflow 3.0 부터 아래 경로로 import 합니다.
+from airflow.sdk import DAG, Variable
+from airflow.providers.standard.operators.bash import BashOperator
+
+# Airflow 2.10.5 이하 버전에서 실습시 아래 경로에서 import 하세요.
+#from airflow import DAG
+#from airflow.models import Variable
+#from airflow.operators.bash import BashOperator
 
 email_str = Variable.get("email_target")
 email_lst = [email.strip() for email in email_str.split(',')]
