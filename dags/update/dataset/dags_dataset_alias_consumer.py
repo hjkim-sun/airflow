@@ -22,15 +22,19 @@ with DAG(
         start_date=pendulum.datetime(2025, 3, 1, tz='Asia/Seoul'),
         tags=['update:2.10.5','producer','metadata','asset-alias','bicycle']
 ) as dag:
+    '''
+    Airflow 3.0 버전에서 실행시 아래 코드 부분 (34번 라인)
+    inlet_events[AssetAlias(DATASET_ALIAS)] 부분을 가져오지 못하는 것으로 보입니다. (버그로 예상되며 추후 버그 Fix시 안내드리겠습니다)
+    '''
     @task(task_id='task_consumer_with_dataset_alias',
           inlets=[AssetAlias(DATASET_ALIAS)])
     def task_consumer_with_dataset_alias(**kwargs):
         inlet_events = kwargs.get('inlet_events')
-        print('inlet_events',inlet_events)
+        print('inlet_events:',inlet_events)
         events = inlet_events[AssetAlias(DATASET_ALIAS)]
 
-        # Metadata에서 S3 경로를 얻은 후 ObjectStoragePath 를 이용해
-        print('events', events)
+        # Metadata에서 S3 경로를 얻은 후 ObjectStoragePath 를 이용해 S3에서 로컬로 파일 복사
+        print('events:', events)
         src_path = events[-1].extra["path"]      # events[-1]: 가장 최근의 데이터셋
         file_nm = src_path.split('/')[-1]
         src_obj = ObjectStoragePath(src_path, conn_id='conn-amazon-s3-access')

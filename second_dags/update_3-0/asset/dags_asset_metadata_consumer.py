@@ -3,7 +3,7 @@ import pendulum
 from zlib import crc32
 
 
-seoul_api_rt_bicycle_info = Asset('seoul_api_rt_bicycle_info')
+seoul_api_rt_bicycle_info = Asset('asset_seoul_api_rt_bicycle_info')
 
 with DAG(
         dag_id='dags_asset_metadata_consumer',

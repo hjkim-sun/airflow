@@ -28,7 +28,10 @@ with DAG(
         path='/opt/airflow/files/rt_bicycle_info/{{data_interval_end.in_timezone("Asia/Seoul") | ds_nodash }}',
         file_name='bikeList.csv'
     )
-
+    '''
+    airflow 3.0 -> Asset Trigger 되는 DAG의 data_interval_start, end 파라미터는 None 이 오도록 변경되었습니다. 
+    따라서 Producer DAG에서 file 경로를 Metadata에 넣어 전송하고, Consumer DAG에서 file 경로를 꺼내오도록 변경합니다.
+    '''
     @task(task_id='task_producer_with_metadata',
           outlets=[seoul_api_rt_bicycle_info])
     def task_producer_with_metadata(**kwargs):
@@ -42,7 +45,7 @@ with DAG(
             print(f'file_crc: {crc}')
             print(f'file_cnt: {cnt}')
         # Dataset에 Metadata를 넣는 방법, 첫 번째: context 변수 접근을 통해 입력
-        kwargs["outlet_events"][seoul_api_rt_bicycle_info].extra = {"len_of_bikeList": cnt, 'crc32':crc}
+        kwargs["outlet_events"][seoul_api_rt_bicycle_info].extra = {"len_of_bikeList": cnt, 'crc32':crc, 'file_path':file}
 
         # Dataset에 Metadata를 넣는 방법, 두 번째: Metadata 클래스 + yield 를 이용해 입력
         # yield Metadata(
