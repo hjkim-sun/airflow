@@ -1,0 +1,11 @@
+<html>
+  <body>
+    <h2>Airflow 작업 실패 알림</h2>
+    <ul>
+      <li><b>DAG:</b> {{ dag.dag_id }}</li>
+      <li><b>Task:</b> {{ ti.task_id }}</li>
+      <li><b>실행일:</b> {{ ts }}</li>
+      <li><b>에러로그:</b> {{ exception }}</li>
+    </ul>
+  </body>
+</html>

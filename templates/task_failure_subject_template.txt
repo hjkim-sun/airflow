@@ -1,0 +1,1 @@
+[Airflow 알림] {{ dag.dag_id }} - {{ ti.task_id }} 실패
