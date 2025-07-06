@@ -42,7 +42,13 @@ with DAG(
     @task(task_id='python_pull')
     def python_pull_xcom(**kwargs):
         ti = kwargs['ti']
-        status_value = ti.xcom_pull(key='bash_pushed')
+
+        # 2025/07/06 추가 사항
+        # 3.0.0 버전부터 task_ids 값을 주지 않으면 Xcom 을 찾지 못합니다.
+        # 버그인지, 의도한 것인지는 확실치 않으나 해결될 때까지 task_ids 값을 넣어서 수행합니다.
+
+        # status_value = ti.xcom_pull(key='bash_pushed')
+        status_value = ti.xcom_pull(key='bash_pushed', task_ids='bash_push')
         return_value = ti.xcom_pull(task_ids='bash_push')
         print('status_value:' + str(status_value))
         print('return_value:' + return_value)

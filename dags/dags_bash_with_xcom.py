@@ -21,9 +21,14 @@ with DAG(
                  "echo COMPLETE"
     )
 
+    # 2025/07/06 추가 사항
+    # 3.0.0 버전부터 task_ids 값을 주지 않으면 Xcom 을 찾지 못합니다.
+    # 버그인지, 의도한 것인지는 확실치 않으나 해결될 때까지 task_ids 값을 넣어서 수행합니다.
+
     bash_pull = BashOperator(
         task_id='bash_pull',
-        env={'PUSHED_VALUE':"{{ ti.xcom_pull(key='bash_pushed') }}",
+        #env={'PUSHED_VALUE':"{{ ti.xcom_pull(key='bash_pushed') }}",
+        env={'PUSHED_VALUE':"{{ ti.xcom_pull(key='bash_pushed', task_ids='bash_push') }}",
             'RETURN_VALUE':"{{ ti.xcom_pull(task_ids='bash_push') }}"},
         bash_command="echo $PUSHED_VALUE && echo $RETURN_VALUE ",
         do_xcom_push=False
