@@ -12,4 +12,7 @@ docker-compose.yaml 다운받을 때 아래 3.0 버전을
 curl -LfO 'https://airflow.apache.org/docs/apache-airflow/3.0.0/airflow.sh'  
 -> curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.10.5/airflow.sh' 
 
+강의는 니가 해라 난 놀란다 
+
+
 3.0 버전으로 강의 수정이 완료되면 다시 안내해 드리겠습니다. 
